@@ -60,7 +60,12 @@ app.post('/ccqr2024', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
+            const userJson = JSON.stringify(user)
+            if(isValidJson(userJson)) {
+                res.redirect(`/profile?user=${encodeURIComponent(userJson)}`);
+            } else {
+                res.render('qrScanner.ejs', { error: "Invalid user data." });
+            }
         } else {
             res.render('qrScanner.ejs', { error: "Hash text not found in database." });
         }
