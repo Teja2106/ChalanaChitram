@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
+import session from 'express-session';
 import pkg from 'pg';
 
 const app = express();
@@ -20,6 +21,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Configure the session middleware
+app.use(session({
+    secret: 'gstudiochalanachitram',
+    resave: false,
+    saveUninitialized: true
+}));
+
 function getCurrentDay() {
     const now = new Date();
     const eventStartDate = new Date('2024-02-23');
@@ -31,15 +39,6 @@ function getCurrentDay() {
         return diffDays + 1;
     } else {
         return -1;
-    }
-}
-
-function isValidJson(jsonString) {
-    try {
-        JSON.parse(jsonString);
-        return true;
-    } catch (e) {
-        return false;
     }
 }
 
@@ -60,7 +59,7 @@ app.post('/ccqr2024', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            res.locals.user = user;
+            req.session.user = user; // Store user data in the session
             res.render('qrScanner.ejs', { error: null });
         } else {
             res.render('qrScanner.ejs', { error: "Hash text not found in database." });
@@ -72,10 +71,10 @@ app.post('/ccqr2024', async (req, res) => {
 });
 
 
-// app.get('/profile', async (req, res) => {
-//     const userData = req.query.user ? decodeURIComponent(req.query.user) : null;
-//     res.render('profile.ejs', { user: userData });
-// });
+app.get('/profile', (req, res) => {
+    const user = req.session.user || null;
+    res.render('profile.ejs', { user });
+});
 
 app.post('/check-in', async (req, res) => {
     const currentDay = getCurrentDay();
