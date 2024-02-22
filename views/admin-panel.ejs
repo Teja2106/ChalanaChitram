@@ -102,6 +102,12 @@
                     <td><%= recipient.day1_checkin %></td>
                     <td><%= recipient.day2_checkin %></td>
                     <td><%= recipient.day3_checkin %></td>
+                    <td>
+                        <form action="/check-in" method="POST">
+                            <input type="hidden" name="hashText" value="<%= recipient.hash_mail %>">
+                            <button type="submit" class="btn btn-success">Check In</button>
+                        </form>
+                    </td>
                 </tr>
             <% }); %>
         </tbody>
