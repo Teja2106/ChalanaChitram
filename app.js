@@ -60,7 +60,7 @@ app.post('/ccqr2024', async (req, res) => {
         if (result.rows.length > 0) {
             const user = result.rows[0];
             req.session.user = user; // Store user data in the session
-            res.render('qrScanner.ejs', { error: null });
+            res.redirect('/profile')
         } else {
             res.render('qrScanner.ejs', { error: "Hash text not found in database." });
         }
@@ -85,7 +85,7 @@ app.post('/check-in', async (req, res) => {
         const result = await client.query(`UPDATE cc_reg SET day${currentDay}_checkin = NOW() WHERE hash_mail = $1`, [hashText]);
         client.release();
 
-        res.redirect('/ccqr');
+        res.redirect('/ccqr2024');
     } catch (err) {
         console.error('Error checking in:', err);
         res.status(500).send('Failed to check in. Please try again later.');
