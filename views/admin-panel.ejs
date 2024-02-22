@@ -48,7 +48,8 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to the Admin Panel</h1>
+    <div class="container">
+        <h1>Welcome to the Admin Panel</h1>
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search for email id.." onkeyup="searchEmail()">
         <button onclick="clearSearch()">Clear</button>
@@ -116,7 +117,7 @@
     <% if (error) { %>
         <p>Error: <%= error %></p>
     <% } %>
-
+    </div>
     <script>
         function searchEmail() {
             var input, filter, table, tr, td, i, txtValue;

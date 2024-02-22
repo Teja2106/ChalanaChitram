@@ -46,36 +46,36 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-// app.get('/ccqr2024', (req, res) => {
-//     res.render('qrScanner.ejs', { error: "" });
-// });
+app.get('/ccqr2024', (req, res) => {
+    res.render('qrScanner.ejs', { error: "" });
+});
 
-// app.post('/ccqr2024', async (req, res) => {
-//     try {
-//         let hashText = req.body.hashText;
-//         const client = await pool.connect();
-//         const result = await client.query('SELECT * FROM cc_reg WHERE hash_mail = $1', [hashText]);
-//         client.release();
+app.post('/ccqr2024', async (req, res) => {
+    try {
+        let hashText = req.body.hashText;
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM cc_reg WHERE hash_mail = $1', [hashText]);
+        client.release();
 
-//         if (result.rows.length > 0) {
-//             const user = result.rows[0];
-//             console.log(user);
-//             req.session.user = user; // Store user data in the session
-//             res.redirect('/profile')
-//         } else {
-//             res.render('qrScanner.ejs', { error: "Hash text not found in database." });
-//         }
-//     } catch (err) {
-//         console.error('Error executing query', err);
-//         res.render('qrScanner.ejs', { user: null, error: "An error occurred. Please try again later." });
-//     }
-// });
+        if (result.rows.length > 0) {
+            const user = result.rows[0];
+            console.log(user);
+            req.session.user = user; // Store user data in the session
+            res.redirect('/profile')
+        } else {
+            res.render('qrScanner.ejs', { error: "Hash text not found in database." });
+        }
+    } catch (err) {
+        console.error('Error executing query', err);
+        res.render('qrScanner.ejs', { error: "An error occurred. Please try again later." });
+    }
+});
 
 
-// app.get('/profile', (req, res) => {
-//     const user = req.session.user;
-//     res.render('profile.ejs', { user: user });
-// });
+app.get('/profile', (req, res) => {
+    const user = req.session.user;
+    res.render('profile.ejs', { user: user });
+});
 
 app.post('/check-in', async (req, res) => {
     const currentDay = getCurrentDay();
