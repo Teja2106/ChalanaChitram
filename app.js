@@ -60,7 +60,8 @@ app.post('/ccqr2024', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            res.render('qrScanner.ejs', { user, error: null });
+            res.locals.user = user;
+            res.render('qrScanner.ejs', { user: res.locals.user, error: null });
         } else {
             res.render('qrScanner.ejs', { user: null, error: "Hash text not found in database." });
         }
