@@ -26,21 +26,25 @@
             </div>
         </div>
 
-        <% if (user) { %>
-            <h1>User Profile</h1>
-            <br>
-            <ul>
-                <li>Name: <%= user.name %></li>
-                <li>Email: <%= user.email %></li>
-                <li>Mobile: <%= user.mobile %></li>
-                <li>Accommodation Type: <%= user.acc_type %></li>
-            </ul>
-            <br>
-            <form action="/check-in" method="POST">
-                <input type="hidden" name="hashText" value="<%= user.hash_mail %>">
-                <button type="submit" class="btn btn-success">Check In!</button>
-            </form>
-        <% } %>
+        <div id="result">
+            <% if (user) { %>
+                <h2>User Details</h2>
+                <ul>
+                    <li>Name: <%= user.name %></li>
+                    <li>Email: <%= user.email %></li>
+                    <li>Mobile: <%= user.mobile %></li>
+                    <li>Accommodation Type: <%= user.acc_type %></li>
+                </ul>
+                <form action="/check-in" method="POST">
+                    <input type="hidden" name="hashText" value="<%= user.hash_mail %>">
+                    <button type="submit">Check In</button>
+                </form>
+            <% } else { %>
+                <% if (error) { %>
+                    <p>Error: <%= error %></p>
+                <% } %>
+            <% } %>
+        </div>
     </div>
     <script>
         const html5Qrcode = new Html5Qrcode('reader');
