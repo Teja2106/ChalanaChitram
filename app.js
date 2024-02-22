@@ -59,6 +59,7 @@ app.post('/ccqr2024', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
+            console.log(user);
             req.session.user = user; // Store user data in the session
             res.redirect('/profile')
         } else {
@@ -72,7 +73,7 @@ app.post('/ccqr2024', async (req, res) => {
 
 
 app.get('/profile', (req, res) => {
-    const user = req.session.user || null;
+    const user = req.session.user;
     res.render('profile.ejs', { user: user });
 });
 
