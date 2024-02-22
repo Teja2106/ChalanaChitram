@@ -59,8 +59,7 @@ app.post('/ccqr2024', async (req, res) => {
         client.release();
 
         if (result.rows.length > 0) {
-            const user = result.rows[0];
-            const userJson = JSON.stringify(user);
+            const userJson = JSON.stringify(result.rows[0].hash_mail);
             if (isValidJson(userJson)) {
                 res.redirect(`/profile?user=${userJson}`);
             } else {
@@ -68,7 +67,7 @@ app.post('/ccqr2024', async (req, res) => {
             }
         } else {
             res.render('qrScanner.ejs', { error: "Hash text not found in database." });
-        }
+        }        
     } catch (err) {
         console.error('Error executing query', err);
         res.render('qrScanner.ejs', { error: "An error occurred. Please try again later." });
