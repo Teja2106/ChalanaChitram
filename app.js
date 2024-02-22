@@ -60,9 +60,8 @@ app.post('/ccqr2024', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            const userJson = JSON.stringify(user);
             if (isValidJson(userJson)) {
-                res.redirect(`/profile?hash_mail=${encodeURIComponent(user.hash_mail)}`);
+                res.redirect(`/profile?user=${encodeURIComponent(JSON.stringify(user))}`);
             } else {
                 res.render('qrScanner.ejs', { error: "Invalid user data." });
             }
@@ -76,7 +75,7 @@ app.post('/ccqr2024', async (req, res) => {
 });
 
 app.get('/profile', async (req, res) => {
-    const userData = req.query.hash_mail ? JSON.parse(req.query.hash_mail) : null;
+    const userData = req.query.user ? decodeURIComponent(req.query.user) : null;
     res.render('profile.ejs', { user: userData });
 });
 
