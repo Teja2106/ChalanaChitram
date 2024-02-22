@@ -60,12 +60,7 @@ app.post('/ccqr2024', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            const userJson = JSON.stringify(user)
-            if(isValidJson(userJson)) {
-                res.redirect(`/profile?user=${encodeURIComponent(userJson)}`);
-            } else {
-                res.render('qrScanner.ejs', { error: "Invalid user data." });
-            }
+            res.render('qrScanner.ejs', { user });
         } else {
             res.render('qrScanner.ejs', { error: "Hash text not found in database." });
         }
@@ -75,10 +70,10 @@ app.post('/ccqr2024', async (req, res) => {
     }
 });
 
-app.get('/profile', async (req, res) => {
-    const userData = req.query.user ? decodeURIComponent(req.query.user) : null;
-    res.render('profile.ejs', { user: userData });
-});
+// app.get('/profile', async (req, res) => {
+//     const userData = req.query.user ? decodeURIComponent(req.query.user) : null;
+//     res.render('profile.ejs', { user: userData });
+// });
 
 app.post('/check-in', async (req, res) => {
     const currentDay = getCurrentDay();
