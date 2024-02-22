@@ -73,7 +73,7 @@ app.post('/ccqr2024', async (req, res) => {
 
 app.get('/profile', (req, res) => {
     const user = req.session.user || null;
-    res.render('profile.ejs', { user });
+    res.render('profile.ejs', { user: user });
 });
 
 app.post('/check-in', async (req, res) => {
