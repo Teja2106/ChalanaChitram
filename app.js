@@ -8,10 +8,10 @@ const PORT = 3000;
 
 const  { Pool } = pkg;
 const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "cc_ticketing",
-    password: "Shoyo@UwU",
+    user: "shoyo",
+    host: "dpg-cnbje6ocmk4c73ah928g-a.singapore-postgres.render.com",
+    database: "cc_reg",
+    password: "IGQ25b5Es0y1trzkhzrvyhYaaZtv1mcW",
     port: 5432,
 });
 
