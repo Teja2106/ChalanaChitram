@@ -62,7 +62,7 @@ app.post('/ccqr2024', async (req, res) => {
             const user = result.rows[0];
             const userJson = JSON.stringify(user);
             if (isValidJson(userJson)) {
-                res.redirect(`/profile?hash_mail=${encodeURIComponent(user.hash_mail)}`);
+                res.redirect(`/profile?user=${encodeURIComponent(user.hash_mail)}`);
             } else {
                 res.render('qrScanner.ejs', { error: "Invalid user data." });
             }
