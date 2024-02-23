@@ -88,10 +88,13 @@ app.post('/check-in', async (req, res) => {
         const client = await pool.connect();
         const result = await client.query(`UPDATE cc_reg SET day${currentDay}_checkin = NOW() WHERE hash_mail = $1`, [hashText]);
         client.release();
-        res.render('profile.ejs', { success: 'Checked in!' });
-        setTimeout(() => {
-            res.redirect('/ccqr2024');
-        }, 5000);
+        if(result.rows.leng > 0) {
+            const user = result.rows[0];
+            res.render('profile.ejs', { success: 'Checked in!', user });
+            setTimeout(() => {
+                res.redirect('/ccqr2024');
+            }, 5000);
+        }
     } catch (err) {
         console.error('Error checking in:', err);
         res.render('profile.ejs', { error: 'Failed to check in. Please try again later.' });
