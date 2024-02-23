@@ -70,7 +70,7 @@ app.get('/profile', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            res.render('profile.ejs', { user, success: "" });
+            res.render('profile.ejs', { user });
         } else {
             res.render('profile.ejs', { error: "Hash text not found in database." });
         }
@@ -88,13 +88,7 @@ app.post('/check-in', async (req, res) => {
         const client = await pool.connect();
         const result = await client.query(`UPDATE cc_reg SET day${currentDay}_checkin = NOW() WHERE hash_mail = $1`, [hashText]);
         client.release();
-        if(result.rows.leng > 0) {
-            const user = result.rows[0];
-            res.render('profile.ejs', { success: 'Checked in!', user });
-            setTimeout(() => {
-                res.redirect('/ccqr2024');
-            }, 5000);
-        }
+        res.redirect('/ccqr2024');
     } catch (err) {
         console.error('Error checking in:', err);
         res.render('profile.ejs', { error: 'Failed to check in. Please try again later.' });
