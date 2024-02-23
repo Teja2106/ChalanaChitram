@@ -18,6 +18,11 @@
         <form action="/check-in" method="POST">
             <input type="hidden" name="hashText" value="<%= user.hash_mail %>">
             <button type="submit" class="btn btn-success">Check In!</button>
+            <% if (success) { %>
+                <div class="alert alert-success">
+                    <p><%= success %></p>
+                </div>
+            <% } %>
         </form>
         <br>
         <form action="/ccqr2024" method="GET">
