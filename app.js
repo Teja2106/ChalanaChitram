@@ -70,7 +70,7 @@ app.get('/profile', async (req, res) => {
 
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            res.render('profile.ejs', { user });
+            res.render('profile.ejs', { user, success: "" });
         } else {
             res.render('profile.ejs', { error: "Hash text not found in database." });
         }
