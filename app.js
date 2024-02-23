@@ -46,36 +46,39 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-// app.get('/ccqr2024', (req, res) => {
-//     res.render('qrScanner.ejs', { error: "" });
-// });
+app.get('/ccqr2024', (req, res) => {
+    res.render('qrScanner.ejs', { error: "" });
+});
 
-// app.post('/ccqr2024', async (req, res) => {
-//     try {
-//         let hashText = req.body.hashText;
-//         const client = await pool.connect();
-//         const result = await client.query('SELECT * FROM cc_reg WHERE hash_mail = $1', [hashText]);
-//         client.release();
-
-//         if (result.rows.length > 0) {
-//             const user = result.rows[0];
-//             console.log(user);
-//             req.session.user = user; // Store user data in the session
-//             res.redirect('/profile')
-//         } else {
-//             res.render('qrScanner.ejs', { error: "Hash text not found in database." });
-//         }
-//     } catch (err) {
-//         console.error('Error executing query', err);
-//         res.render('qrScanner.ejs', { error: "An error occurred. Please try again later." });
-//     }
-// });
+app.post('/ccqr2024', (req, res) => {
+    try {
+        let hashText = req.body.hashText;
+        res.redirect(`/profile?hashText=${hashText}`);
+    } catch (err) {
+        console.error('Error processing hashText', err);
+        res.render('qrScanner.ejs', { error: "An error occurred. Please try again later." });
+    }
+});
 
 
-// app.get('/profile', (req, res) => {
-//     const user = req.session.user;
-//     res.render('profile.ejs', { user: user });
-// });
+app.get('/profile', async (req, res) => {
+    try {
+        let hashText = req.query.hashText;
+        const client = await pool.connect();
+        const result = await client.query('SELECT * FROM cc_reg WHERE hash_mail = $1', [hashText]);
+        client.release();
+
+        if (result.rows.length > 0) {
+            const user = result.rows[0];
+            res.render('profile.ejs', { user });
+        } else {
+            res.render('profile.ejs', { error: "Hash text not found in database." });
+        }
+    } catch (err) {
+        console.error('Error executing query', err);
+        res.render('profile.ejs', { error: "An error occurred. Please try again later." });
+    }
+});
 
 app.post('/check-in', async (req, res) => {
     const currentDay = getCurrentDay();
